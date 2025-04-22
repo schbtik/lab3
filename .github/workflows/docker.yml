@@ -43,6 +43,12 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}  # Логін для Docker Hub, зберігається в GitHub Secrets
           password: ${{ secrets.DOCKER_PASSWORD }}  # Пароль для Docker Hub, зберігається в GitHub Secrets
 
+      # Крок для установки Docker Compose
+      - name: Install Docker Compose
+        run: |
+          sudo curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+          sudo chmod +x /usr/local/bin/docker-compose
+
       # Крок для збірки Docker образу за допомогою docker-compose
       - name: Build Docker image
         run: docker-compose -f docker-compose.yml build  # Використовуємо docker-compose для зборки образу
@@ -59,3 +65,4 @@ jobs:
       # Крок для зупинки контейнерів після виконання тестів
       - name: Stop containers
         run: docker-compose down  # Зупиняємо та видаляємо контейнери після завершення тестів
+
