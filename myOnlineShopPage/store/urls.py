@@ -19,3 +19,8 @@ urlpatterns = [
     path('order_success/<int:order_id>/', order_success, name='order_success'),  
     path('remove_from_cart/<int:item_id>/', remove_from_cart, name='remove_from_cart'),
 ]
+
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+

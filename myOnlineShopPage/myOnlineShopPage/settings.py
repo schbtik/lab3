@@ -11,10 +11,15 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
 from pathlib import Path
-
+import os
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+# Путь для хранения медиа-файлов
+MEDIA_URL = '/media/'  # URL, по которому будут доступны медиа-файлы
+
+# Папка на сервере, где будут храниться медиа-файлы
+MEDIA_ROOT = os.path.join(BASE_DIR, 'products')
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
