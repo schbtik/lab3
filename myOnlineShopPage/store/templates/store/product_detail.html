@@ -1,0 +1,191 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8" />
+    <title>{{ product.name }}</title>
+    <link rel="stylesheet" href="{% static 'store/productInfoStyle.css' %}">
+    <link rel="icon" type="image/x-icon" href="{% static 'store/favicon.ico' %}" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet" />
+
+    <!-- Вставка стилей для кнопок и других элементов -->
+    <style>
+        /* Стиль для кнопок */
+        .btn-custom {
+            background-color: rgb(241, 116, 130);
+            border-color: rgb(241, 116, 130);
+            color: #fff;
+            border-radius: 30px;
+            padding: 12px 24px;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn-custom:hover {
+            background-color: #fad0c4;
+            border-color: #fad0c4;
+        }
+
+        .btn-outline-custom {
+            background-color: transparent;
+            border-color: rgb(241, 116, 130);
+            color: rgb(241, 116, 130);
+            border-radius: 30px;
+            padding: 12px 24px;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn-outline-custom:hover {
+            background-color: rgb(241, 116, 130);
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Навігація -->
+<nav class="navbar navbar-expand-lg" style="background-color: rgb(241, 116, 130);">
+    <div class="container position-relative">
+        <div class="d-flex">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item"><a class="nav-link" href="/">Головна</a></li>
+                <li class="nav-item"><a class="nav-link" href="?category=With Sugar">With Sugar</a></li>
+                <li class="nav-item"><a class="nav-link" href="?category=Sugar Free">Sugar Free</a></li>
+                <li class="nav-item"><a class="nav-link" href="?category=Organic">Organic</a></li>
+            </ul>
+        </div>
+        <div class="position-absolute top-50 start-50 translate-middle">
+            <a class="navbar-brand fw-bold fs-3" href="/">ShopyShop</a>
+        </div>
+        <div class="d-flex ms-auto">
+            <a class="btn btn-outline-dark" href="{% url 'cart_view' %}">
+                <i class="bi-cart-fill me-1"></i>
+                Кошик
+            </a>
+        </div>
+    </div>
+</nav>
+
+<!-- Карточка товару -->
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-12">
+            <div class="card shadow border-0">
+                <div class="row g-0 flex-column flex-md-row">
+                    <!-- Фото -->
+                    <div class="col-md-5">
+                        {% if product.image %}
+                            <img src="{{ product.image.url }}" class="product-image rounded-start" alt="{{ product.name }}">
+                        {% else %}
+                            <img src="https://dummyimage.com/500x500/dee2e6/6c757d.jpg" class="product-image rounded-start" alt="Зображення недоступне">
+                        {% endif %}
+                    </div>
+                    <!-- Опис -->
+                    <div class="col-md-7">
+                        <div class="card-body d-flex flex-column justify-content-between h-100 p-4">
+                            <div>
+                                <h3 class="card-title fw-bold">{{ product.name }}</h3>
+                                <p class="card-text text-muted" style="max-height: 200px; overflow-y: auto; margin-bottom: 1rem;">
+                                    {{ product.description }}
+                                </p>
+                                <div style="margin-bottom: 1rem;">
+                                    <p class="mb-0"><strong>Вага:</strong> {{ product.weight }}</p>
+                                    {% if product.brand %}
+                                        <p class="mb-0"><strong>Бренд:</strong> {{ product.brand }}</p>
+                                    {% endif %}
+                                </div>
+                                <h4 class="price">{{ product.price }} грн</h4>
+                            </div>
+                            <div class="mt-4 d-flex gap-2">
+                                <a href="{% url 'add_to_cart' product.id %}" class="btn btn-custom w-100">
+                                    <i class="bi bi-bag-plus me-1"></i> Замовити
+                                </a>
+                                <a href="{% url 'cart_view' %}" class="btn btn-outline-custom w-100">
+                                    <i class="bi bi-cart me-1"></i> До кошика
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Також вам може сподобатися -->
+<div class="container my-5">
+    <h4 class="mb-4">Також вам може сподобатися</h4>
+    <div class="d-flex gap-3 overflow-auto" style="flex-wrap: nowrap; flex-direction: row;">
+        {% for related_product in related_products %}
+            <div class="card" style="min-width: 200px; max-width: 200px; height: 320px;">
+                <a href="{% url 'product_detail' related_product.id %}" class="text-decoration-none text-dark">
+                    {% if related_product.image %}
+                        <img src="{{ related_product.image.url }}" class="card-img-top" style="height: 180px; object-fit: cover; margin-bottom: 0;" alt="{{ related_product.name }}">
+                    {% else %}
+                        <img src="https://dummyimage.com/200x180/dee2e6/6c757d.jpg" class="card-img-top" style="margin-bottom: 0;" alt="Зображення">
+                    {% endif %}
+                    <div class="card-body p-2">
+                        <h6 class="card-title" style="font-size: 1rem; height: 40px; overflow: hidden; text-overflow: ellipsis;">{{ related_product.name }}</h6>
+                        <div class="d-flex justify-content-center" style="margin-top: auto;">
+                            <p class="text-dark fw-bold" style="font-size: 1.1rem;">{{ related_product.price }} грн</p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+
+<!-- Footer -->
+<footer class="py-5 bg-dark">
+    <div class="container">
+        <p class="m-0 text-center text-white sweet-footer">
+            &copy; Твій магазин 2025 — солодкі миті починаються тут 🍓
+        </p>
+
+        <!-- Адреса та графік роботи -->
+        <div class="row mt-4">
+            <div class="col-12 col-md-4 text-center footer-address">
+                <h5>Магазин на вулиці Лісовій</h5>
+                <p>вул. Лісова, 12, Київ</p>
+            </div>
+            <div class="col-12 col-md-4 text-center footer-address">
+                <h5>Магазин на вулиці Печерській</h5>
+                <p>вул. Печерська, 45, Київ</p>
+            </div>
+            <div class="col-12 col-md-4 text-center footer-address">
+                <h5>Магазин на вулиці Шевченка</h5>
+                <p>вул. Шевченка, 87, Київ</p>
+            </div>
+        </div>
+
+        <div class="row mt-3">
+            <div class="col-12 col-md-4 text-center footer-hours">
+                <h5>Графік роботи</h5>
+                <p>Пн - Пт: 10:00 - 19:00</p>
+                <p>Сб: 11:00 - 16:00</p>
+                <p>Нд: Вихідний</p>
+            </div>
+            <div class="col-12 col-md-4 text-center footer-hours">
+                <h5>Графік роботи</h5>
+                <p>Пн - Пт: 10:00 - 19:00</p>
+                <p>Сб: 11:00 - 16:00</p>
+                <p>Нд: Вихідний</p>
+            </div>
+            <div class="col-12 col-md-4 text-center footer-hours">
+                <h5>Графік роботи</h5>
+                <p>Пн - Пт: 10:00 - 19:00</p>
+                <p>Сб: 11:00 - 16:00</p>
+                <p>Нд: Вихідний</p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- Scripts -->
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.min.js"></script>
+</body>
+</html>
