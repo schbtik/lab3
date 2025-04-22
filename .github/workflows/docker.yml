@@ -1,41 +1,40 @@
-name: Build and Test Docker Container  # Название процесса
+name: Build and Test Docker Container
 
 on:
   push:
     branches:
-      - main  # или другая ветка, по которой вы хотите запускать workflow
+      - main
   pull_request:
     branches:
-      - main  # Запуск workflow при создании pull request в ветку main
+      - main
 
 jobs:
   build:
-    runs-on: ubuntu-latest  # Используем последний образ Ubuntu для выполнения действий
+    runs-on: ubuntu-latest
 
     steps:
-      # Шаг для получения кода из репозитория
       - name: Checkout code
-        uses: actions/checkout@v2  # Используем стандартное действие для получения кода из репозитория
+        uses: actions/checkout@v2
 
-      # Шаг для установки Docker Compose
       - name: Install Docker Compose
         run: |
           sudo curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
           sudo chmod +x /usr/local/bin/docker-compose
 
-      # Шаг для сборки Docker образа с помощью docker-compose
       - name: Build Docker image
-        run: docker-compose -f myOnlineShopPage/docker-compose.yml build  # Указываем путь к docker-compose.yml
+        run: docker-compose -f myOnlineShopPage/docker-compose.yml build
 
-      # Шаг для запуска контейнеров с помощью docker-compose
-      - name: Run Docker container
-        run: docker-compose -f myOnlineShopPage/docker-compose.yml up -d  # Запускаем контейнеры в фоновом режиме
+      - name: Start containers
+        run: docker-compose -f myOnlineShopPage/docker-compose.yml up -d
 
-      # Шаг для выполнения тестов внутри контейнера (например, если у вас Django)
+      - name: Wait for web service to be ready
+        run: |
+          echo "Waiting for the web service to be ready..."
+          sleep 10  # Даем немного времени контейнеру
+
       - name: Run tests
         run: |
-          docker-compose exec web python manage.py test  # Выполняем тесты Django внутри контейнера web
+          docker-compose -f myOnlineShopPage/docker-compose.yml exec -T web python manage.py test
 
-      # Шаг для остановки контейнеров после завершения тестов
       - name: Stop containers
-        run: docker-compose -f myOnlineShopPage/docker-compose.yml down  # Останавливаем и удаляем контейнеры после завершения тестов
+        run: docker-compose -f myOnlineShopPage/docker-compose.yml down
