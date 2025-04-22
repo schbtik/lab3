@@ -1,0 +1,22 @@
+# Python
+__pycache__/
+*.py[cod]
+*.sqlite3
+*.log
+
+# macOS system file
+.DS_Store
+
+# Virtualenv
+venv/
+env/
+ENV/
+*.env
+
+# VSCode / PyCharm
+.vscode/
+.idea/
+
+# Media / static files
+media/
+staticfiles/
