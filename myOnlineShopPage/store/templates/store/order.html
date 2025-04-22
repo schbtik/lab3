@@ -1,0 +1,152 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <title>Оформлення замовлення</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'store/orderStyles.css' %}">
+</head>
+<body>
+
+<!-- Навігація -->
+<nav class="navbar navbar-expand-lg">
+    <div class="container position-relative">
+        <div class="d-flex">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item"><a class="nav-link" href="/">Головна</a></li>
+                <li class="nav-item"><a class="nav-link" href="?category=With Sugar">With Sugar</a></li>
+                <li class="nav-item"><a class="nav-link" href="?category=Sugar-Free">Sugar Free</a></li>
+                <li class="nav-item"><a class="nav-link" href="?category=Organic">Organic</a></li>
+            </ul>
+        </div>
+        <div class="position-absolute top-50 start-50 translate-middle">
+            <a class="navbar-brand fw-bold fs-3" href="/">ShopyShop</a>
+        </div>
+        <div class="d-flex ms-auto">
+            <a class="btn btn-outline-dark" href="{% url 'cart_view' %}">
+                <i class="bi-cart-fill me-1"></i>
+                Кошик
+            </a>
+        </div>
+    </div>
+</nav>
+
+<div class="container py-5">
+    <h2 class="text-center mb-4">Оформлення замовлення</h2>
+
+    {% if items %}
+    <table class="table table-bordered table-striped mb-5">
+        <thead>
+            <tr>
+                <th>Товар</th>
+                <th>Кількість</th>
+                <th>Ціна за одиницю</th>
+                <th>Сума</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in items %}
+            <tr>
+                <td>{{ item.product.name }}</td>
+                <td>{{ item.quantity }}</td>
+                <td>{{ item.product.price }} грн</td>
+                <td>{{ item.get_total_price }} грн</td>
+            </tr>
+            {% endfor %}
+            <tr class="fw-bold">
+                <td colspan="3" class="text-end">Разом:</td>
+                <td>{{ total }} грн</td>
+            </tr>
+        </tbody>
+    </table>
+    {% endif %}
+
+    <form method="POST">
+        {% csrf_token %}
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <h4 class="mb-3">Деталі доставки</h4>
+
+                        <div class="mb-3">
+                            <label class="form-label">Повне ім’я</label>
+                            <input type="text" class="form-control" name="full_name" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Електронна пошта</label>
+                            <input type="email" class="form-control" name="email" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Номер телефону</label>
+                            <input type="text" class="form-control" name="phone_number" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Місто</label>
+                            <input type="text" class="form-control" name="city" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Номер відділення Нової Пошти</label>
+                            <input type="text" class="form-control" name="postal_office_number" required>
+                        </div>
+
+                        <button type="submit" class="btn btn-success w-100">Підтвердити замовлення</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+<!-- Футер -->
+<footer class="py-5">
+    <div class="container">
+        <p class="m-0 text-center sweet-footer">
+            &copy; Твій магазин 2025 — солодкі миті починаються тут 🍓
+        </p>
+
+        <div class="row mt-4">
+            <div class="col-12 col-md-4 text-center">
+                <h5>Магазин на вулиці Лісовій</h5>
+                <p>вул. Лісова, 12, Київ</p>
+            </div>
+            <div class="col-12 col-md-4 text-center">
+                <h5>Магазин на вулиці Печерській</h5>
+                <p>вул. Печерська, 45, Київ</p>
+            </div>
+            <div class="col-12 col-md-4 text-center">
+                <h5>Магазин на вулиці Шевченка</h5>
+                <p>вул. Шевченка, 87, Київ</p>
+            </div>
+        </div>
+
+        <div class="row mt-3">
+            <div class="col-12 col-md-4 text-center">
+                <h5>Графік роботи</h5>
+                <p>Пн - Пт: 10:00 - 19:00</p>
+                <p>Сб: 11:00 - 16:00</p>
+                <p>Нд: Вихідний</p>
+            </div>
+            <div class="col-12 col-md-4 text-center">
+                <h5>Графік роботи</h5>
+                <p>Пн - Пт: 10:00 - 19:00</p>
+                <p>Сб: 11:00 - 16:00</p>
+                <p>Нд: Вихідний</p>
+            </div>
+            <div class="col-12 col-md-4 text-center">
+                <h5>Графік роботи</h5>
+                <p>Пн - Пт: 10:00 - 19:00</p>
+                <p>Сб: 11:00 - 16:00</p>
+                <p>Нд: Вихідний</p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+</body>
+</html>
