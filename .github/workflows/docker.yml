@@ -25,11 +25,11 @@ jobs:
 
       # Шаг для сборки Docker образа с помощью docker-compose
       - name: Build Docker image
-        run: docker-compose -f docker-compose.yml build  # Сборка образа с помощью docker-compose
+        run: docker-compose -f myOnlineShopPage/docker-compose.yml build  # Указываем путь к docker-compose.yml
 
       # Шаг для запуска контейнеров с помощью docker-compose
       - name: Run Docker container
-        run: docker-compose -f docker-compose.yml up -d  # Запускаем контейнеры в фоновом режиме
+        run: docker-compose -f myOnlineShopPage/docker-compose.yml up -d  # Запускаем контейнеры в фоновом режиме
 
       # Шаг для выполнения тестов внутри контейнера (например, если у вас Django)
       - name: Run tests
@@ -38,4 +38,4 @@ jobs:
 
       # Шаг для остановки контейнеров после завершения тестов
       - name: Stop containers
-        run: docker-compose down  # Останавливаем и удаляем контейнеры после завершения тестов
+        run: docker-compose -f myOnlineShopPage/docker-compose.yml down  # Останавливаем и удаляем контейнеры после завершения тестов
