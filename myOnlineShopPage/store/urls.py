@@ -1,6 +1,7 @@
 from django.urls import path
 from store.views import add_to_cart
 from store.views import cart_view
+from store.views import remove_from_cart
 from store.views import home
 from store.views import products_view, product_detail, create_order, order_success
 from django.contrib import admin
