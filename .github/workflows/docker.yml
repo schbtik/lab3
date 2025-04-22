@@ -12,21 +12,6 @@ jobs:
   build:
     runs-on: ubuntu-latest  # Виконання на останньому образі Ubuntu в GitHub Actions
 
-    services:
-      postgres:
-        image: postgres:13  # Використовуємо образ PostgreSQL версії 13
-        env:
-          POSTGRES_USER: example  # Ім'я користувача для PostgreSQL
-          POSTGRES_PASSWORD: example  # Пароль для PostgreSQL
-          POSTGRES_DB: exampledb  # Назва бази даних для PostgreSQL
-        ports:
-          - 5432:5432  # Відкриваємо порт для PostgreSQL
-        options: >-
-          --health-cmd="pg_isready -U example"  # Перевірка стану контейнера PostgreSQL
-          --health-interval=10s  # Перевірка стану кожні 10 секунд
-          --health-timeout=5s  # Час очікування для перевірки стану
-          --health-retries=5  # Кількість спроб перевірки стану
-
     steps:
       # Крок для отримання коду з репозиторію
       - name: Checkout code
@@ -65,4 +50,3 @@ jobs:
       # Крок для зупинки контейнерів після виконання тестів
       - name: Stop containers
         run: docker-compose down  # Зупиняємо та видаляємо контейнери після завершення тестів
-
