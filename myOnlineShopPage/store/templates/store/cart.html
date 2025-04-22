@@ -1,0 +1,118 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="utf-8" />
+    <title>Кошик</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet" />
+    <!-- Подключаем внешний CSS файл -->
+    <link rel="stylesheet" href="{% static 'store/cartStyles.css' %}" />
+</head>
+<body>
+    <!-- Заголовок с фоном и надписью "Ваш солодкий кошик 🍬" -->
+    <header class="py-5" style="background: rgb(241, 116, 130);">
+        <div class="container text-center text-white">
+            <h1 class="display-4 fw-bolder cart-title">Ваш солодкий кошик 🍬</h1>
+        </div>
+    </header>
+
+    <!-- Зміст кошика -->
+    <section class="py-5">
+        <div class="container px-4 px-lg-5">
+            {% if items %}
+            <table class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th>Товар</th>
+                        <th>Кількість</th>
+                        <th>Ціна за шт.</th>
+                        <th>Сума</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in items %}
+                    <tr>
+                        <td class="text-start">
+                            <!-- Убираем фон и ставим крестик серым цветом -->
+                            <form method="POST" action="{% url 'remove_from_cart' item.id %}" style="display:inline;">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-link p-0" style="border: none; background: none; cursor: pointer;">
+                                    <i class="bi bi-x-circle" style="font-size: 1.5rem; color: gray;"></i>
+                                </button>
+                            </form>
+                            {{ item.product.name }}
+                        </td>
+                        
+                        <td class="text-start">{{ item.quantity }}</td>
+                        <td class="text-start">{{ item.product.price }} грн</td>
+                        <td class="text-start">{{ item.get_total_price }} грн</td>
+                        
+                    </tr>
+                    {% endfor %}
+                    <tr class="fw-bold">
+                        <td colspan="3" class="text-end">Разом:</td>
+                        <td>{{ total }} грн</td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="text-center mt-4">
+                <a class="btn btn-custom" href="{% url 'create_order' %}">Оформити замовлення</a>
+                <a class="btn btn-custom ms-3" href="{% url 'products_view' %}">Продовжити покупки</a>
+            </div>           
+            {% else %}
+            <div class="alert alert-info text-center">
+                Ваш кошик порожній. <a href="{% url 'products_view' %}">Перейти до каталогу</a>
+            </div>
+            {% endif %}
+        </div>
+    </section>
+
+    <footer class="py-5 bg-dark">
+        <div class="container">
+            <p class="m-0 text-center text-white sweet-footer">
+                &copy; Твій магазин 2025 — солодкі миті починаються тут 🍓
+            </p>
+
+            <!-- Адреса та графік роботи -->
+            <div class="row mt-4">
+                <div class="col-12 col-md-4 text-center footer-address">
+                    <h5>Магазин на вулиці Лісовій</h5>
+                    <p>вул. Лісова, 12, Київ</p>
+                </div>
+                <div class="col-12 col-md-4 text-center footer-address">
+                    <h5>Магазин на вулиці Печерській</h5>
+                    <p>вул. Печерська, 45, Київ</p>
+                </div>
+                <div class="col-12 col-md-4 text-center footer-address">
+                    <h5>Магазин на вулиці Шевченка</h5>
+                    <p>вул. Шевченка, 87, Київ</p>
+                </div>
+            </div>
+
+            <div class="row mt-3">
+                <div class="col-12 col-md-4 text-center footer-hours">
+                    <h5>Графік роботи</h5>
+                    <p>Пн - Пт: 10:00 - 19:00</p>
+                    <p>Сб: 11:00 - 16:00</p>
+                    <p>Нд: Вихідний</p>
+                </div>
+                <div class="col-12 col-md-4 text-center footer-hours">
+                    <h5>Графік роботи</h5>
+                    <p>Пн - Пт: 10:00 - 19:00</p>
+                    <p>Сб: 11:00 - 16:00</p>
+                    <p>Нд: Вихідний</p>
+                </div>
+                <div class="col-12 col-md-4 text-center footer-hours">
+                    <h5>Графік роботи</h5>
+                    <p>Пн - Пт: 10:00 - 19:00</p>
+                    <p>Сб: 11:00 - 16:00</p>
+                    <p>Нд: Вихідний</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
