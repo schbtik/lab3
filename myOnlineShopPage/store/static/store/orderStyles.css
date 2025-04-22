@@ -1,0 +1,61 @@
+
+body {
+    background-color: #f8f9fa;
+}
+
+nav.navbar {
+    background-color: rgb(241, 116, 130);
+}
+
+table {
+    background-color: #ffffff;
+}
+
+th, td {
+    text-align: center;
+}
+
+th {
+    background-color: rgb(241, 116, 130);
+    color: #fff;
+}
+
+tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+tr:nth-child(odd) {
+    background-color: #fff;
+}
+
+.form-control {
+    border-radius: 0.375rem;
+    border: 1px solid #e0e0e0;
+}
+
+.card {
+    background-color: #fff;
+}
+
+.btn-success {
+    background-color: rgb(241, 116, 130);
+    border-color: rgb(241, 116, 130);
+}
+
+.btn-success:hover {
+    background-color: rgb(210, 80, 95);
+    border-color: rgb(210, 80, 95);
+}
+
+footer {
+    background-color: #212529;
+    color: #fff;
+}
+
+footer .footer-address, footer .footer-hours {
+    color: #f1f1f1;
+}
+
+.sweet-footer {
+    font-size: 16px;
+}
